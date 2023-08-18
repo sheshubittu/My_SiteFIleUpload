@@ -1,0 +1,99 @@
+{% extends 'authenticate/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Upload CSV and Analyze with OpenAI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-multiselect@0.9.16/dist/css/bootstrap-multiselect.min.css">
+    <script src="{% static 'authenticate/js/custom.js' %}"></script>
+</head>    
+
+{% block content %}
+
+{% comment %} <h3> Home page</h3> {% endcomment %}
+
+{% if user.is_authenticated %}
+   <h2>Welcome {{request.user.first_name}} to Avanté Codeworx Analytics</h2>
+<section class="bg bg-gradient bg-light">
+    <div class="container py-5">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" action="{% url 'process_data' %}">
+                    {% csrf_token %}
+                    <label for="csv_file"class="form-label">Upload Your CSV File</label>
+                    <input class="form-control" type="file" name="csv_file" id="csv_file" accept=".csv">
+                    {% comment %} <br>
+                    <label class="form-label">Select Chart Type</label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Bar Chart" name="chart_type" id="chart_type_bar" {% if 'Bar Chart' in chart_types %}checked{% endif %}>
+                <label class="form-check-label" for="chart_type_bar">Bar Chart</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Pie Chart" name="chart_type" id="chart_type_pie" {% if 'Pie Chart' in chart_types %}checked{% endif %}>
+                <label class="form-check-label" for="chart_type_pie">Pie Chart</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Trend" name="chart_type" id="chart_type_trend" {% if 'Trend' in chart_types %}checked{% endif %}>
+                <label class="form-check-label" for="chart_type_trend">Trend</label>
+            </div> {% endcomment %}
+
+                  
+
+                    {% comment %} <label for="prompt">Enter Your Question</label>
+                    <input class="form-control"  type="text" placeholder="Question" name="prompt" id="prompt" aria-label="default input example">
+                    <br>  {% endcomment %}
+                    <br>
+                    <button type="submit" class="btn btn-Secondary">Submit</button>    
+                </form>
+            </div>
+        </div>
+    </div>
+    {% comment %} <div class="container py-1">
+        <div class="card">
+                <h4>Result</h4>       
+                {% if json_data %}                
+                    <p>{{ json_data }}</p>
+                {% else %}
+                    <p>No results found.</p>
+                {% endif %}     {% endcomment %}
+            
+            <div>
+                {{ generated_html_code|safe }}
+            </div> 
+            {% comment %} {% if generated_html_code %}
+                {% for chart_type in chart_types %}
+                    <div class="selected-chart-type">{{ chart_type }} &#10004;</div>
+                    <div>{{ generated_html_code|safe }}</div>
+                {% endfor %}
+            {% endif %}                             {% endcomment %}
+                
+        </div>
+    </div>
+    <div class="container py-5">
+        <div class="card">
+            {% comment %} <h4>History</h4>
+            {% for response_text in response_history %}
+                <p>{{ response_text }}</p>
+            {% endfor %}                   {% endcomment %}
+            <a href="{% url 'clear_history' %}">Clear History</a>
+                
+        </div>        
+    </div>
+</section>
+
+
+   {{% else %}
+       <section class="marketing-content">
+           
+           <h2>Generative AI Avante Codeworx</h2>
+           <p>The Generative AI Avante Codeworx is a cutting-edge technology that utilizes artificial intelligence to create unique and innovative Analytics. It employs advanced AI to generate visuals that are not only aesthetically innovative but also functional, practical and relevant. The technology has revolutionized the IT industry by providing Analytics with a new tool for creating meaningful insights.</p>
+           <img src="https://img.freepik.com/free-photo/3d-rendering-biorobots-concept_23-2149524399.jpg?w=826&t=st=1686558300~exp=1686558900~hmac=c204d6d26e80666ab9e066211221783df050e04566f5347805f30f5f9bc8526f" alt="Marketing Image">
+       
+</section>
+{% endif %}
+{% endblock %}
+
+
+</html>
