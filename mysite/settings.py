@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'sth^hh8e+g%jo5(zr7+ozv0)+uq&t93u!i@2mp*kfu2+xog2b0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','https://domaindjangoapp2.azurewebsites.net/']
 
 
 # Application definition
@@ -38,12 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authenticate',
-    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -122,6 +120,4 @@ USE_TZ = True
 
 STATIC_URL = 'authenticate/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-CORS_ORIGIN_ALLOW_ALL = True
 
